@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import '../styles/Login.css'
 
 function Login() {
@@ -28,6 +29,8 @@ function Login() {
         </div>
         <button type='submit' className='login-button'>Login</button>
       </form>
+      <p className='dont-have'>Don't have an account?{'  '}
+      <NavLink to='/signup' className='signup-link'>Sign Up</NavLink></p>
     </div>
   )
 }

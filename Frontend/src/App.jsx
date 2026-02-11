@@ -8,6 +8,7 @@ import Login from '../src/pages/Login'
 import Hero from '../src/components/Hero'
 import Navbar  from '../src/components/Navbar'
 import Home from '../src/pages/Home'
+import Signup from './pages/SignUp'
 
 function App(){
   return(
@@ -19,6 +20,7 @@ function App(){
       <Route path ='/review' element={<Review />}></Route>
       <Route path = '/watchlist' element={<WatchList />}></Route>
       <Route path ='/login' element={<Login />}></Route>
+      <Route path='/signup' element={<Signup />}></Route>
 
     </Routes>
     </>
