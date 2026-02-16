@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8
     },
+    profile:{
+        avatar:{
+            type:String,
+            default:""
+        },
+        bio:{
+            type:String,
+            default:""
+        }
+    },
 }, { timestamps: true })
 
 export default mongoose.model('User', userSchema)
