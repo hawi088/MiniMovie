@@ -1,26 +1,29 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const app =express()
-const cors = require('cors')
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv'
+import authRouter from './routers/authRouter.js'
+
+dotenv.config()
+const app = express()
 const PORT = process.env.PORT || 5000
-const cookieParser = require('cookie-parser')
-require('dotenv').config()
 
 app.use(cookieParser())
 app.use(cors({
-        origin:'http://localhost:5173/',
-        credentials:true
-}
-))
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
 app.use(express.json())
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.json('Backend is running!')
 })
+
+app.use('/api/auth', authRouter)
+
 mongoose.connect(process.env.DATABASE_URL)
-.then(()=>console.log('MongoDB successfully connected'))
-.catch(err=>console.error(err))
+    .then(() => console.log('MongoDB successfully connected'))
+    .catch(err => console.error(err))
 
-
-
-app.listen(PORT ,()=>console.log(`Server is running on ${PORT}`))
+app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
