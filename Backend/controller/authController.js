@@ -110,9 +110,12 @@ export const getProfile = async(req,res) =>{
         })
         res.status(201).json({
             success:true,
-            profile:user.profile,
-            email:user.email,
-            username:user.username
+            profile: {
+                username: user.username,
+                email: user.email,
+                avatar: user.avatar,
+                bio: user.bio
+            }
         })
     }catch(err){
         res.status(500).json({
@@ -135,7 +138,12 @@ export const updateProfile = async(req,res)=>{
         res.status(200).json({
             success:true,
             message:'Profile successfully Updated',
-            profile:user.profile
+            profile: {
+                username: user.username,
+                email: user.email,
+                avatar: user.avatar,
+                bio: user.bio
+            }
         })
     }catch(err){
         res.status(500).json({
