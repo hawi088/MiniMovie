@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import authRouter from './routers/authRouter.js'
 import userRouter from './routers/userRouter.js'
 import movieRouter from './routers/moviesRouter.js'
-import { rateMovie , toggleFavorite , toggleWatchList} from './controller/movieController.js'
+import { rateMovie , toggleFavorite , toggleWatchList , reviewMovie} from './controller/movieController.js'
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -28,6 +28,7 @@ app.use('/api/movies',movieRouter)
 app.use('/api/movies',rateMovie)
 app.use('/api/movies',toggleFavorite)
 app.use('/api/movies',toggleWatchList)
+app.use('/api/movies',reviewMovie)
 
 mongoose.connect(process.env.DATABASE_URL)
     .then(() => console.log('MongoDB successfully connected'))

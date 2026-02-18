@@ -186,3 +186,26 @@ export const toggleWatchList = async(req,res)=>{
         })
     }
 }
+export const reviewMovie = async (req,res)=>{
+    try{
+        const {id} = req.params;
+        const {review} = req.body
+        if(!review || review.trim==="") return res.status(400).json({
+            success:false,
+            message:'Review cannot be empty'
+        })
+        const movieId = Number(id)
+        const userMovie = await UserMovie.findOneAndUpdate({user:req.user.id,movieId},{$set:{review}} , {new:true,upsert:true})
+        res.status(201).json({
+            success:true,
+            message:'Reviewed movie successfully',
+            review:userMovie.review
+        })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:'Failed to Review a movie'
+        })
+    }
+}
