@@ -3,7 +3,7 @@ const userMovieSchema = new mongoose.Schema({
     user:{
         type:mongoose.Schema.ObjectId,
         ref:'User',
-        required
+        required:true
     },
     movieId:{
         type:Number,

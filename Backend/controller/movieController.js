@@ -1,8 +1,7 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
-
+import UserMovie from '../model/UserMovie.js'
 dotenv.config()
-const TMDB_API_KEY = process.env_API_KEY
 export const searchMovie=async(req,res)=>{
     try{
         const {query} = req.query
@@ -70,6 +69,13 @@ export const getmovieDetail = async(req,res)=>{
         const director = credit.crew.find(
             (person)=>person.job === 'Director'
         )
+        let userInteraction = null
+        if(req.user){
+            userInteraction = await UserMovie.findOne({
+                user:req.user.id,
+                movieId:id
+            })
+        }
         const cleanMovie = {
             id:movie.id,
             title:movie.title,
@@ -79,7 +85,14 @@ export const getmovieDetail = async(req,res)=>{
             poster: movie.poster_path
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         : null,
-            director:director ? director.name : "Not available"
+            director:director ? director.name : "Not available",
+            userInteraction: userInteraction ?userInteraction : {
+                rating:userInteraction.rating|| null,
+            favorite:userInteraction.favorite,
+            watchlist:userInteraction.watchlist,
+            review:userInteraction.review || null
+            }
+            
         }
         res.status(200).json({
             success:true,
@@ -91,6 +104,41 @@ export const getmovieDetail = async(req,res)=>{
         res.status(500).json({
             success:false,
             message:'Failed to fetch movie detail'
+        })
+    }
+}
+export const rateMovie = async (req,res)=>{
+    try{
+        console.log("USER:", req.user);
+console.log("BODY:", req.body);
+console.log("PARAMS:", req.params);
+
+        const {id} = req.params
+        const {rating} = req.body
+        if(!rating || rating<1 || rating > 10) return res.status(400).json({
+            success:false,
+            message:'Rating must be between 1 - 10'
+        })
+        const movieId = Number(id)
+        const userMovie = await UserMovie.findOneAndUpdate({
+            user:req.user.id,
+            movieId
+        },{
+            $set:{rating}
+        },
+        {new:true,
+        upsert:true}
+        )
+        res.status(201).json({
+            success:true,
+            messasge:'Rated Successfully',
+            userMovie
+        })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:'Failed to rate a movie'
         })
     }
 }
