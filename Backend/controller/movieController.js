@@ -209,3 +209,24 @@ export const reviewMovie = async (req,res)=>{
         })
     }
 }
+export const getMovieReviews = async(req,res)=>{
+    try{
+        const {id} = req.params
+        const movieId = Number(id)
+        const reviews = await UserMovie.find({
+            movieId,
+            review:{$exists:true , $ne : ""}
+        }).populate('user',"username").sort({createdAt:-1})
+        res.status(201).json({
+            success:true,
+            message:'Reviews successfully fetched',
+            reviews
+        })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:'Failed to get Reviews for the Movie'
+        })
+    }
+}
