@@ -21,7 +21,7 @@ const userMovieSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    wathclist:{
+    watchlist:{
         type:Boolean,
         default:false
     },

@@ -142,3 +142,47 @@ console.log("PARAMS:", req.params);
         })
     }
 }
+export const toggleFavorite = async(req,res)=>{
+    try{
+        const {id} = req.params
+        const movieId = Number(id)
+        const userMovie = await UserMovie.findOneAndUpdate({user:req.user.id,movieId},
+        
+        [{
+            $set:{favorite:{$not:"$favorite"}}
+        }],{new:true,upsert:true,updatePipeline:true})
+        res.status(201).json({
+            success:true,
+            message:'Favorite status Updated',
+            favorite:userMovie.favorite
+        })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:"Failed update favorite status"
+        })
+    }
+}
+export const toggleWatchList = async(req,res)=>{
+    try{
+        const {id} = req.params
+        const movieId = Number(id)
+        const userMovie = await UserMovie.findOneAndUpdate({user:req.user.id,movieId},[
+            {
+                $set:{watchlist:{$not:'$watchlist'}}
+            }
+        ],{new:true,upsert:true,updatePipeline:true})
+        res.status(201).json({
+            success:true,
+            message:'Watchlist status updated successfully',
+            watchlist:userMovie.watchlist
+        })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:"Failed to update watchlist status"
+        })
+    }
+}
