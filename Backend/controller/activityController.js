@@ -62,3 +62,52 @@ export const likeReview = async(req,res)=>{
         })
     }
 }
+export const commentReview = async(req,res)=>{
+    try{
+        const {movieId , userId} = req.params
+        const {text} = req.body
+        const reviewOwner = await User.findById(userId)
+        if(!reviewOwner) return res.status(404).json({
+            success:false,
+            message:'User not found'
+        })
+        const userReview = await UserMovie.findOne({
+            user:userId,
+            movieId,
+            review:{$exists:true,$ne:""}
+        })
+        if(!userReview) return res.status(404).json({
+            success:false,
+            message:'This person did not review this movie'
+        })
+        let activity = await Activity.findOne({
+            type:"review",
+            actor5:userId,
+            movieId
+        }) 
+        if(!activity){
+            activity = await Activity.create({
+                actor:userId,
+                type:"review",
+                movieId,
+                metadata:{
+                    reviewText:userReview.review,
+                    rating:userReview.rating
+                }
+            })
+        }
+        activity.comments = activity.comments ||[]
+            activity.comments.push({user:req.user.id,text})
+            await activity.save()
+            res.status(201).json({
+                success:true,
+                message:'Review commented.'
+            })
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:'Failed to commmet on review'
+        })
+    }
+}

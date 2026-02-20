@@ -33,7 +33,7 @@ app.use('/api/movies',movieRouter)
 app.use('/api/movies',movieRouter)
 app.use('/api/users',followRouter)
 app.use('/api/activity',activityRouter)
-
+app.use('/api/activity',activityRouter)
 mongoose.connect(process.env.DATABASE_URL)
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => console.error(err))
