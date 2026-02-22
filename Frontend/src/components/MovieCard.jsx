@@ -3,7 +3,7 @@ import '../components/MovieCard.jsx'
 import { ReviewContext } from '../context/ReviewContext.jsx'
 import { useState } from 'react'
 import { watchlistContext } from '../context/WatchListContext.jsx'
-import { FavoriteContext } from '../context/FavoritesContext'
+import { FavoriteContext } from '../context/FavoritesContext.jsx'
 function MovieCard({movie}){
     const [favorite , addFavorite , removeFavorite] =useState(FavoriteContext)
     cosnt [review , addReview , removeReview] = useState(ReviewContext)

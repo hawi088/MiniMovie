@@ -1,7 +1,7 @@
 import { useState , createContext, Children } from "react";
 export const ReviewContext = createContext()
 export function ReviewProvider({children}){
-    cosnt [review , setReview] = useState([])
+    const [review , setReview] = useState([])
     const addReview = (movie)=>{
         setReview(prev =>[...prev, movie])
     }

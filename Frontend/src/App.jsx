@@ -9,6 +9,7 @@ import Hero from '../src/components/Hero'
 import Navbar  from '../src/components/Navbar'
 import Home from '../src/pages/Home'
 import Signup from './pages/SignUp'
+import Profile from './components/Profile'
 
 function App(){
   return(
@@ -21,6 +22,7 @@ function App(){
       <Route path = '/watchlist' element={<WatchList />}></Route>
       <Route path ='/login' element={<Login />}></Route>
       <Route path='/signup' element={<Signup />}></Route>
+      <Route path = '/profile' element={<Profile />}></Route>
 
     </Routes>
     </>

@@ -1,6 +1,6 @@
 import '../styles/Favorite.css'
-import { FavoriteContext } from '../context/FavoritesContext';
-import {MovieCard} from '../components/MovieCard'
+import { FavoriteContext } from '../context/FavoritesContext.jsx';
+import MovieCard from '../components/MovieCard.jsx'
 import { useState } from 'react';
 function Favorite(){
     const {favorite} = useState(FavoriteContext)

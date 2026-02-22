@@ -10,6 +10,7 @@ function Navbar(){
             <NavLink to ='/review'>Review</NavLink>
             <NavLink to='/watchlist'>WatchList</NavLink>
             <NavLink to ='/login'>Login</NavLink>
+            <NavLink to ='profile'>Profile</NavLink>
         </div>
     </nav>
     )
