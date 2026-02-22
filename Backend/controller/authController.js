@@ -1,7 +1,7 @@
 import User from '../model/User.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-
+import UserMovie from '../model/UserMovie.js'
 export const signup = async (req, res) => {
     try {
         const { username, email, password } = req.body
@@ -150,6 +150,32 @@ export const updateProfile = async(req,res)=>{
         res.status(500).json({
             success:false,
             message:"Internal Server Error"
+        })
+    }
+}
+export const getUserMovie = async (req,res)=>{
+    try{
+        const userId = req.user.id
+        const userMovies = await UserMovie.find({user:userId})
+        const reviews =  userMovies.filter(m=>m.review && m.review !=="")
+        const favorite =  userMovies.filter(m=>m.favorite === true)
+        const watchlist =  userMovies.filter(m=>m.watchlist === true)
+        const rating =  userMovies.filter(m=>m.rating && m.rating > 0 && m.rating <=10 )
+        res.status(200).json({
+            success:true,
+            message:'Fetched your data successfully',
+            reviews,
+            favorite,
+            watchlist,
+            rating
+        })
+
+
+    }catch(err){
+        console.error(err)
+        res.status(500).json({
+            success:false,
+            message:'Cannot get your movie detail'
         })
     }
 }
