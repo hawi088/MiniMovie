@@ -20,7 +20,7 @@ function Signup() {
         body:JSON.stringify({username,email,password})
       })
       const data = await res.json()
-      if(data.success) navigate ('/login')
+      if(data.success) navigate ('/profile')
       else{
     setError('Sign up failed. Please try again')
     }

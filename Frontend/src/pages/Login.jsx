@@ -4,7 +4,7 @@ import '../styles/Login.css'
 
 
 function Login() {
-  const [UsernameOrEmail , setUsernameOrEmail] = useState('')
+  const [email , setEmail] = useState('')
   const [password , setPassword]  = useState('')
   const [error , setError] = useState('')
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ function Login() {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         credentials:'include',
-        body:JSON.stringify({email:UsernameOrEmail , password})
+        body:JSON.stringify({email , password})
       })
       const data = await res.json()
       if(data.success) navigate('/profile')
@@ -33,14 +33,14 @@ function Login() {
       <form className='login-form' onSubmit={handleSubmit}>
         {error && <p style={{color:'red'}}>{error}</p>}
         <div className='form-group'>
-          <label htmlFor='username'>Username or Email</label>
+          <label htmlFor='username'>Email</label>
           <input
-            type='text'
-            id='username'
-            name='username'
-            placeholder='Enter your username or email'
-            value = {UsernameOrEmail}
-            onChange={(e)=>setUsernameOrEmail(e.target.value)}
+            type='email'
+            id='email'
+            name='email'
+            placeholder='Enter your email'
+            value = {email}
+            onChange={(e)=>setEmail(e.target.value)}
             required
           />
         </div>
