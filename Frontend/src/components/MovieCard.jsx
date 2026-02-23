@@ -1,23 +1,26 @@
 import '../styles/MovieCard.css'
-import '../components/MovieCard.jsx'
-import { ReviewContext } from '../context/ReviewContext.jsx'
-import { useState } from 'react'
-import { watchlistContext } from '../context/WatchListContext.jsx'
-import { FavoriteContext } from '../context/FavoritesContext.jsx'
 function MovieCard({movie}){
-    const [favorite , addFavorite , removeFavorite] =useState(FavoriteContext)
-    cosnt [review , addReview , removeReview] = useState(ReviewContext)
-    const [watchlist , addWathList , removeWatchList] = useState(watchlistContext)
-    const isWatchList = watchlist.some(m=>m.id ==id)
-    const isFavorite  = favorite.some(m=>m.id == id)
+    const handleFavorite= async()=>{
+        try{
+            const res = await fetch(`http://localhost:5000/api/movies/${movie.id}/favorite`,{
+                method:"POST",
+                headers:{'Content-Type':'application/json'},
+                credentials:'include',
+                body:JSON.stringify({movieId:movie.id , title:movie.title , poster: movie.poster})
+            })
+            const data = await res.json()
+            console.log(data)
+        }catch(err){
+            console.error(err)
+        }
+    }
     return(
         <div className='movie-card'>
-            <img src={movie.poster} alt={movie.title} className='movie-poster'/>
+            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className='movie-poster'/>
             <h3>{movie.title}</h3>
             <div className='buttons-function'>
-            <button className='poster-btn' id='favorite-btn' onClick={isFavorite? removeFavorite(movie.id) : addFavorite(movie.id)}>❤</button>
-            <button className='poster-btn' id='review-btn' onClick={addReview}>🖊</button>
-            <button className='poster-btn' id='watchlist-btn'onClick={isWatchList ? removeWatchList(movie.id) : addWathList(movie.id)}>👁</button>
+            <button className='poster-btn' id='favorite-btn' onClick={handleFavorite}>❤</button>
+            
             </div>
         </div>
     )
