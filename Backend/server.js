@@ -4,7 +4,6 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import authRouter from './routers/authRouter.js'
-import userRouter from './routers/userRouter.js'
 import movieRouter from './routers/moviesRouter.js'
 import followRouter from './routers/followRouter.js'
 import activityRouter from './routers/activityRouter.js'
@@ -24,7 +23,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRouter)
-app.use('/api/user',userRouter)
 app.use('/api/movies',movieRouter)
 app.use('/api/users',followRouter)
 app.use('/api/activity',activityRouter)
