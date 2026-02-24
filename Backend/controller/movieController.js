@@ -1,6 +1,7 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
 import UserMovie from '../model/UserMovie.js'
+import User from '../model/User.js'
 dotenv.config()
 export const searchMovie=async(req,res)=>{
     try{
@@ -228,5 +229,89 @@ export const getMovieReviews = async(req,res)=>{
             success:false,
             message:'Failed to get Reviews for the Movie'
         })
+    }
+}
+export const getFavoriteOfUser = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const userFavorites = await UserMovie.find({
+        user: userId,
+        favorite: true,
+      });
+      const favoriteMovies = await Promise.all(
+        userFavorites.map(async (um) => {
+          const res = await fetch(
+           `https://api.themoviedb.org/3/movie/${um.movieId}?api_key=${process.env.VITE_API_KEY}`
+          );
+          const movieData = await res.json();
+  
+          return {
+            id: um.movieId,
+            title: movieData.title,
+            poster_path: movieData.poster_path,
+            ...um.toObject(),
+          };
+        })
+      );
+      res.status(200).json({
+        success: true,
+        message: "Successfully fetched user favorite movies",
+        favoriteMovies,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        message: "Cannot load favorite movies for this user",
+      });
+    }
+  };
+export const getWatchlistOfUser = async(req,res)=>{
+    try{
+    const userId = req.user.id;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const userWatchlists = await UserMovie.find({
+        user: userId,
+        watchlist: true,
+      });
+      const watchlistMovies = await Promise.all(
+        userWatchlists.map(async (um) => {
+          const res = await fetch(
+           `https://api.themoviedb.org/3/movie/${um.movieId}?api_key=${process.env.VITE_API_KEY}`
+          );
+          const movieData = await res.json();
+  
+          return {
+            id: um.movieId,
+            title: movieData.title,
+            poster_path: movieData.poster_path,
+            ...um.toObject(),
+          };
+        })
+      );
+      res.status(200).json({
+        success: true,
+        message: "Successfully fetched user favorite movies",
+        watchlistMovies,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        message: "Cannot load favorite movies for this user",
+      });
     }
 }

@@ -1,0 +1,19 @@
+
+.watchlists{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    margin-left: 20px;
+   
+}
+.title{
+    font-size: 30px;
+    margin-top: 30px;
+    font-weight: bold;
+    margin-left: 30px;
+    color: white;
+}
+.watchlists .not-added{
+    color:white;
+    font-size: 18px;
+    text-align: center;
+}
